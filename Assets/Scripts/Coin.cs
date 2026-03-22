@@ -34,6 +34,13 @@ public class Coin : MonoBehaviour
         if (transform.localScale.x <= 0)
         {
             Destroy(gameObject);
+            ManagerGame.instance.xp += value;
         }
+    }
+
+    public void SpawnCoin(Vector3 position)
+    {
+        position.y -= 0.75f;
+        Instantiate(gameObject, position, Quaternion.identity);
     }
 }

@@ -35,6 +35,7 @@ public class Saw : MonoBehaviour
             if (pixel != null)
             {
                 pixel.TakeDamage(damage);
+                Debug.Log("Pixel took " + damage + " damage from Saw.");
             }
         }
     }

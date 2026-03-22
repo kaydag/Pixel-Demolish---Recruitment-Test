@@ -38,13 +38,12 @@ public class Pixel : MonoBehaviour
         spriteRenderer.color = color;
     }
 
-    //void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Gear") && health <= 0)
-    //    {
-    //        Destroy(gameObject);
-    //        Coin coin = collision.gameObject.GetComponent<Coin>();
-    //        coin.SpawnCoin(transform.position);
-    //    }
-    //}
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Gear") && health <= 0)
+        {
+            Destroy(gameObject);
+            ManagerGame.instance.SpawnCoin(transform.position);
+        }
+    }
 }
