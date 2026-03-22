@@ -46,7 +46,7 @@ public class Saw : MonoBehaviour
 
     public void IncreaseSize()
     {
-        transform.scale += new Vector3(sizeIncreaseAmount, sizeIncreaseAmount, 0);
+        transform.localScale += new Vector3(sizeIncreaseAmount, sizeIncreaseAmount, 0);
     }
 
     public void IncreaseSpeed()
