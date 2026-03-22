@@ -4,29 +4,34 @@ using UnityEngine;
 
 public class Gear : MonoBehaviour
 {
-    [SerializeField] bool posRotationDirection = true;
-    [SerializeField] float rotationSpeed = 20f;
-    [SerializeField] float rotationAngle = 0f;
+    [SerializeField] private bool posRotationDirection = true;
+    [SerializeField] private float speedMove = 150f;
+    [SerializeField] private Rigidbody2D rb;
+
+    [SerializeField] private float damage = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
-        rotationSpeed = 20f;
+        rb = GetComponent<Rigidbody2D>();
+        rb.angularVelocity = speedMove * (posRotationDirection ? 1 : -1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Roating();
+
     }
 
-    void Roating()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (rotationAngle > 360f)
+        if (collision.gameObject.CompareTag("Pixel"))
         {
-            rotationAngle = 0f;
+            Pixel pixel = collision.gameObject.GetComponent<Pixel>();
+            if (pixel != null)
+            {
+                pixel.TakeDamage(damage);
+            }
         }
-        rotationAngle += rotationSpeed * Time.deltaTime * (posRotationDirection ? 1 : -1);
-        transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
     }
 }
