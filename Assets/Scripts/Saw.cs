@@ -10,6 +10,10 @@ public class Saw : MonoBehaviour
 
     [SerializeField] private float damage = 5f;
 
+    [SerializeField] private float sizeIncreaseAmount = 0.5f;
+    [SerializeField] private float speedIncreaseAmount = 0.5f;
+    [SerializeField] private float damageIncreaseAmount = 0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,5 +37,26 @@ public class Saw : MonoBehaviour
                 pixel.TakeDamage(damage);
             }
         }
+    }
+
+    public void SpawnSaw(Vector3 position)
+    {
+        transform.position = position;
+    }
+
+    public void IncreaseSize()
+    {
+        transform.scale += new Vector3(sizeIncrease, sizeIncrease, 0);
+    }
+
+    public void IncreaseSpeed()
+    {
+        speedMove += speedMove * speedIncreaseAmount;
+        rb.angularVelocity = speedMove * (posRotationDirection ? 1 : -1);
+    }
+
+    public void IncreaseDamage()
+    {
+        damage += damage * damageIncreaseAmount;
     }
 }
