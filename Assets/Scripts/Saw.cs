@@ -48,16 +48,19 @@ public class Saw : MonoBehaviour
     public void IncreaseSize()
     {
         transform.localScale += new Vector3(sizeIncreaseAmount, sizeIncreaseAmount, 0);
+        Debug.Log("Saw size increased to: " + transform.localScale);
     }
 
     public void IncreaseSpeed()
     {
         speedMove += speedMove * speedIncreaseAmount;
         rb.angularVelocity = speedMove * (posRotationDirection ? 1 : -1);
+            Debug.Log("Saw speed increased to: " + speedMove);
     }
 
     public void IncreaseDamage()
     {
         damage += damage * damageIncreaseAmount;
+        Debug.Log("Saw damage increased to: " + damage);
     }
 }
