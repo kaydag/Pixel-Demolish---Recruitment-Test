@@ -580,7 +580,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2fa5e39c2a6cac468256ff00413add1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sawPrefabs: []
+  listSawPrefabs: []
+  sawPrefabs: {fileID: 0}
   coinPrefab: {fileID: 8005631597892398985, guid: 86e2d91f816ccd2429953b44c026a94a, type: 3}
   xp: 0
 --- !u!4 &588787389
