@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerGame : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    public static ManagerGame instance;
+    public static GameManager instance;
 
     [SerializeField] private List<GameObject> listSawPrefabs;
     [SerializeField] private GameObject sawPrefabs;
     [SerializeField] private GameObject coinPrefab;
 
     [SerializeField] public int xp = 0;
-    [SerializeField] public int baseXpToUpgrade = 100;
-    [SerializeField] public int xpIncrease = 50;
-    [SerializeField] public int upgradeCount = 0;
+    [SerializeField] public int xpToNextLevel = 100;
+    [SerializeField] private int baseXpToUpgrade = 100;
+    [SerializeField] private int xpIncrease = 50;
+    [SerializeField] public int xpToUpgrade = 200;
+    [SerializeField] private int upgradeCount = 0;
+
+    [SerializeField] public int level = 1;
 
     void Awake()
     {
@@ -30,7 +34,7 @@ public class ManagerGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        xpToUpgrade = baseXpToUpgrade + xpIncrease * (upgradeCount - 1);
     }
 
     // Update is called once per frame
@@ -49,12 +53,13 @@ public class ManagerGame : MonoBehaviour
     }
     void Upgrade()
     {
-        int xpToUpgrade = baseXpToUpgrade + xpIncrease * (upgradeCount - 1);
         if (xp >= xpToUpgrade)
         {
             xp -= xpToUpgrade;
             upgradeCount++;
             Debug.Log("Upgrade available! Choose an upgrade.");
+            xpToUpgrade = baseXpToUpgrade + xpIncrease * (upgradeCount - 1);
+            UIManager.instance.UpdateProgressXp(xp, xpToUpgrade);
         }
         else return;
     }

@@ -43,7 +43,7 @@ public class Pixel : MonoBehaviour
         if (collision.gameObject.CompareTag("Gear") && health <= 0)
         {
             Destroy(gameObject);
-            ManagerGame.instance.SpawnCoin(transform.position);
+            GameManager.instance.SpawnCoin(transform.position);
         }
     }
 }

@@ -31,10 +31,18 @@ public class Coin : MonoBehaviour
     void CollectCoin()
     {
         transform.localScale -= new Vector3(0.1f, 0.1f, 0);
-        if (transform.localScale.x <= 0)
+        if (transform.localScale.x <= 0.05f)
         {
             Destroy(gameObject);
-            ManagerGame.instance.xp += value;
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.xp += value;
+                if (UIManager.instance != null)
+                {
+                    UIManager.instance.UpdateProgressXp(GameManager.instance.xp, GameManager.instance.xpToUpgrade);
+                    UIManager.instance.UpdateProgressLv(GameManager.instance.xp, GameManager.instance.xpToNextLevel);
+                }
+            }
         }
     }
 
