@@ -13,7 +13,7 @@ public class ManagerGame : MonoBehaviour
     [SerializeField] public int xp = 0;
     [SerializeField] public int baseXpToUpgrade = 100;
     [SerializeField] public int xpIncrease = 50;
-    [SerializeField] public int upgradeCount = 0;;
+    [SerializeField] public int upgradeCount = 0;
 
     void Awake()
     {
