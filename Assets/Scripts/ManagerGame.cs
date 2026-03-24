@@ -10,7 +10,10 @@ public class ManagerGame : MonoBehaviour
     [SerializeField] private GameObject sawPrefabs;
     [SerializeField] private GameObject coinPrefab;
 
-    [SerializeField] public int xp;
+    [SerializeField] public int xp = 0;
+    [SerializeField] public int baseXpToUpgrade = 100;
+    [SerializeField] public int xpIncrease = 50;
+    [SerializeField] public int upgradeCount = 0;;
 
     void Awake()
     {
@@ -33,7 +36,7 @@ public class ManagerGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Upgrade();
     }
 
     public void SpawnCoin(Vector3 position)
@@ -43,6 +46,17 @@ public class ManagerGame : MonoBehaviour
         {
             coin.SpawnCoin(position);
         }
+    }
+    void Upgrade()
+    {
+        int xpToUpgrade = baseXpToUpgrade + xpIncrease * (upgradeCount - 1);
+        if (xp >= xpToUpgrade)
+        {
+            xp -= xpToUpgrade;
+            upgradeCount++;
+            Debug.Log("Upgrade available! Choose an upgrade.");
+        }
+        else return;
     }
     public void ChooseUpgrade(int index)
     {
