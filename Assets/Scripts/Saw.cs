@@ -27,16 +27,13 @@ public class Saw : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Pixel"))
+        PixelGroup group = collision.gameObject.GetComponent<PixelGroup>();
+
+        if (group != null)
         {
-            Pixel pixel = collision.gameObject.GetComponent<Pixel>();
-            if (pixel != null)
-            {
-                pixel.TakeDamage(damage);
-                Debug.Log("Pixel took " + damage + " damage from Saw.");
-            }
+            group.TakeDamage(transform.position, damage * Time.deltaTime);
         }
     }
 
