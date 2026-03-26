@@ -1,49 +1,90 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Pixel : MonoBehaviour
 {
     [SerializeField] private float health = 10f;
-    [SerializeField] private Rigidbody2D rb;
+    public bool isAlive = true;
 
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Color color;
-    // Start is called before the first frame update
-    void Start()
+    // đổi sang array để giảm GC
+    public Pixel[] neighbors = new Pixel[4];
+
+    public PixelGroup group;
+
+    private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0.5f;
-
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // ❗ TẮT physics ban đầu để giảm lag
+        if (rb != null)
+        {
+            rb.simulated = false;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Init(Color color)
     {
+        spriteRenderer.color = color;
+    }
+
+    public void SetNeighbor(int index, Pixel p)
+    {
+        neighbors[index] = p;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (!isAlive) return;
+
+        health -= damage;
+
         if (health <= 0)
         {
             Die();
         }
     }
 
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-    }
-
     private void Die()
     {
-        color = Color.gray;
-        spriteRenderer.color = color;
+        isAlive = false;
+        spriteRenderer.color = Color.gray;
+        if (group != null)
+            group.NotifyPixelDied(this);
+        Detach();
+    }
+
+    public void Detach()
+    {
+        if (rb != null)
+        {
+            rb.simulated = true;
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            rb.gravityScale = 0.5f;
+        }
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            neighbors[i] = null;
+        }
+        transform.parent = null;
+        if (group != null)
+        {
+            group.allPixels.Remove(this);
+            group = null;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Gear") && health <= 0)
+        if (!isAlive && collision.gameObject.CompareTag("Gear"))
         {
-            Destroy(gameObject);
             GameManager.instance.SpawnCoin(transform.position);
+            Destroy(gameObject);
         }
     }
 }
