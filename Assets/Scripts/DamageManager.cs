@@ -16,25 +16,27 @@ public class DamageManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TakeDamage();
+        if (Input.GetMouseButtonDown(0))
+        {
+            TakeDamage();
+        }
     }
 
     void TakeDamage()
     {
-        if (Input.GetMouseButtonDown(0))
+        Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(worldPos, radius);
+
+        foreach (var hit in hits)
         {
-            Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D[] hits = Physics2D.OverlapCircleAll(worldPos, radius);
-            foreach (var hit in hits)
+            PixelGroup group = hit.GetComponent<PixelGroup>();
+
+            if (group != null)
             {
-                Pixel p = hit.GetComponent<Pixel>();
-                if (p != null && p.isAlive)
-                {
-                    float dist = Vector2.Distance(worldPos, p.transform.position);
-                    float dmg = Mathf.Lerp(maxDamage, 0, dist / radius);
-                    p.TakeDamage(dmg);
-                }
+                group.DamageAtPoint(worldPos, radius, maxDamage);
             }
         }
+
     }
 }

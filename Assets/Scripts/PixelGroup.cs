@@ -112,7 +112,7 @@ public class PixelGroup : MonoBehaviour
         Debug.Log("Collider size: " + col.size);
     }
 
-    public void DamageAtPoint(Vector2 point, float damage)
+    public void TakeDamage(Vector2 point, float damage)
     {
         for (int i = allPixels.Count - 1; i >= 0; i--)
         {
@@ -123,6 +123,24 @@ public class PixelGroup : MonoBehaviour
             {
                 pixel.TakeDamage(damage);
             }
+        }
+    }
+    public void DamageAtPoint(Vector2 point, float radius, float maxDamage)
+    {
+        for (int i = allPixels.Count - 1; i >= 0; i--)
+        {
+            var pixel = allPixels[i];
+
+            if (!pixel.isAlive) continue;
+
+            float dist = Vector2.Distance(point, pixel.transform.position);
+
+            if (dist > radius) continue;
+
+            float t = dist / radius;
+            float dmg = Mathf.Lerp(maxDamage, 0, t);
+
+            pixel.TakeDamage(dmg);
         }
     }
 }

@@ -29,7 +29,7 @@ public class Gear : MonoBehaviour
 
         if (group != null)
         {
-            group.DamageAtPoint(transform.position, damage * Time.deltaTime);
+            group.TakeDamage(transform.position, damage * Time.deltaTime);
         }
     }
 }
